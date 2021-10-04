@@ -22,18 +22,47 @@ function drawCards(deck, count = 1) {
 }
 
 // Transfer camels from players hand (_players[i].hand) to their herd (_players[i].camelsCount)
-function putCamelsFromHandToHerd(game) {
-  for (let i = 0; i < 2; i++) {
-    for (let j = 0; j < game._players[i].main.length; j++) {
-      if (game._players[i].main[j] === "camel") {
-        game._players[i].main.splice(j, 1)
-        game._players[i].camelsCount++
-      }
+export function putCamelsFromHandToHerd(game) {
+  game._players.forEach((player) => {
+    let camelIndex = player.hand.findIndex((card) => card === "camel")
+    while (camelIndex !== -1) {
+      player.hand.splice(camelIndex, 1)
+      player.camelsCount++
+      camelIndex = player.hand.findIndex((card) => card === "camel")
     }
-  }
+  })
 }
 
 // Create a game object
 export function createGame(name) {
-  return {}
+  const deck = initDeck()
+  const market = ["camel", "camel", "camel", ...drawCards(deck, 2)]
+  const game = {
+    id: databaseService.getGames().length + 1,
+    name,
+    market,
+    _deck: deck,
+    _players: [
+      { hand: drawCards(deck, 5), camelsCount: 0, score: 0 },
+      { hand: drawCards(deck, 5), camelsCount: 0, score: 0 },
+    ],
+    currentPlayerIndex: 0,
+    tokens: {
+      diamonds: [7, 7, 5, 5, 5],
+      gold: [6, 6, 5, 5, 5],
+      silver: [5, 5, 5, 5, 5],
+      cloth: [5, 3, 3, 2, 2, 1, 1],
+      spice: [5, 3, 3, 2, 2, 1, 1],
+      leather: [4, 3, 2, 1, 1, 1, 1, 1, 1],
+    },
+    _bonusTokens: {
+      3: shuffle([2, 1, 2, 3, 1, 2, 3]),
+      4: shuffle([4, 6, 6, 4, 5, 5]),
+      5: shuffle([8, 10, 9, 8, 10]),
+    },
+    isDone: false,
+  }
+  putCamelsFromHandToHerd(game)
+  databaseService.saveGame(game)
+  return game
 }
