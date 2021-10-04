@@ -10,6 +10,6 @@ lodash.shuffle.mockImplementation((x) => x)
 describe("Game router", () => {
   test("should create a game", async () => {
     const response = await request(app).post("/games").send({ name: "test" })
-    expect(response.statusCode).
+    expect(response.statusCode).toBe(201)
   })
 })
