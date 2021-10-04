@@ -2,7 +2,7 @@ import * as databaseService from "./databaseService"
 import { shuffle } from "lodash"
 
 // Return a shuffled starting deck except 3 camels
-function initDeck() {
+export function initDeck() {
   const deck = []
   for (let i = 0; i < 6; i++) deck.push("diamonds")
   for (let i = 0; i < 6; i++) deck.push("gold")
@@ -15,7 +15,7 @@ function initDeck() {
 }
 
 // Draw {count} cards of a deck
-function drawCards(deck, count = 1) {
+export function drawCards(deck, count = 1) {
   const drawncards = []
   for (let i = 0; i < count; i++) drawncards.push(deck.shift())
   return drawncards
