@@ -1,6 +1,7 @@
 import request from "supertest"
 import app from "../app"
 import lodash from "lodash"
+import fs from "fs"
 
 // Prevent database service to write tests game to filesystem
 jest.mock("fs")
@@ -93,4 +94,16 @@ describe("Game router", () => {
     expect(response.statusCode).toBe(201)
     expect(response.body).toStrictEqual(expectedGame)
   })
+
+  test("should find all games", async () => {
+
+    fs.readFileSync.mockImplementation(() => "[]")
+    const response1 = await request(app).get("/games")
+    expect(response1.statusCode).toBe(404)
+
+    fs.readFileSync.mockImplementation(() => '[{"id1": 1},{"id2": 2},{"id3": 3}]')
+    const response2 = await request(app).get("/games")
+    expect(response2.statusCode).toBe(200)
+    expect(response2.body).toStrictEqual([{"id1": 1},{"id2": 2},{"id3": 3}])
+  }) 
 })

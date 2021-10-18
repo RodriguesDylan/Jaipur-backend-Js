@@ -1,5 +1,7 @@
 import * as gameService from "./gameService"
 
+jest.mock("fs")
+
 describe("Game service", () => {
   test("should init a deck that has been shuffled", () => {
     const _deck = gameService.initDeck()
