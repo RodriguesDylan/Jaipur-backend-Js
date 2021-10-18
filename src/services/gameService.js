@@ -66,3 +66,12 @@ export function createGame(name) {
   databaseService.saveGame(game)
   return game
 }
+
+export function takeCamels(game) {
+  game.market.reduce(function (indexes, elt, i) {
+    if (elt === "camel") {
+      indexes.push(i)
+    }
+    return indexes
+  }, [])
+}
