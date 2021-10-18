@@ -1,5 +1,6 @@
 import express from "express"
 import * as gameService from "../services/gameService"
+import * as databaseService from "../services/databaseService"
 
 const router = express.Router()
 
@@ -13,18 +14,25 @@ router.post("/", function (req, res) {
 })
 
 // Listen to PUT /game/[id]/take-good
-router.put("/games/" + newGame.game.id + "/take-good", function (req, res) {
+router.put("/games/:id/take-good", function (req, res) {
+  const foundGame = databaseService.findOneGameById(req.path.id)
   if (!req.path.id) {
     return res.status(400).send("Missing id parameter")
   }
-  if (!req.header.playerIndex) {
+  if (!req.header()) {
     return res.status(400).send("Missing playerIndex parameter")
   }
   if (!req.body.takeGoodPayload) {
     return res.status(400).send("Missing good parameter")
   }
-  takeGood(req.path.id, req.header.playerIndex, req.body.takeGoodPayload)
-  res.status(200).send("OK")
+  if (req.path.id !== foundGame.currentPlayerIndex) {
+    return res.status(401).send("PlayerIndex not equal to id")
+  }
+  if (foundGame._player[foundGame.currentPlayerIndex][1].length >= 7) {
+    return res.status(401).send("Already at 7 cards")
+  }
+  takeGood(foundGame, req.path.id, req.body.takeGoodPayload)
+  res.status(200).send(foundGame)
 })
 
 export default router
