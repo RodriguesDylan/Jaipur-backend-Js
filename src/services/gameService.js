@@ -67,4 +67,6 @@ export function createGame(name) {
   return game
 }
 
-export function takeGood(game, playerIndex, takeGoodPayload) {}
+export function takeGood(game, playerIndex, takeGoodPayload) {
+  const takenGood = game.market
+}
