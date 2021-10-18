@@ -23,10 +23,10 @@ router.put("/games/:id/take-camels", function (req, res) {
     return res.status(400).send("Missing header playerIndex")
   }
 
-  const id = req.params.id
-  const playerIndex = req.header("playerIndex")
+  const gameId = Number.parseInt(req.params.id)
+  const playerIndex = Number.parseInt(req.header("playerIndex"))
 
-  const game = databaseService.findOneGameById(id)
+  const game = databaseService.findOneGameById(gameId)
 
   if (!game) {
     return res.status(404).send("Game not found")
