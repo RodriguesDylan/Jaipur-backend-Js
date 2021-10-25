@@ -33,8 +33,8 @@ router.get("/:id", function (req, res) {
 
 export default router
 
-router.put("/games/:id/take-camels", function (req, res) {
-  if (!req.path.id) {
+router.put("/:id/take-camels", function (req, res) {
+  if (!req.params.id) {
     return res.status(400).send("Missing id")
   }
   if (!req.header("playerIndex")) {
@@ -50,6 +50,9 @@ router.put("/games/:id/take-camels", function (req, res) {
     return res.status(404).send("Game not found")
   }
   if (game.currentPlayerIndex !== playerIndex) {
+    console.log(game.currentPlayerIndex)
     return res.status(403).send("Wrong player")
   }
+
+  gameService.takeCamels(game, playerIndex)
 })
