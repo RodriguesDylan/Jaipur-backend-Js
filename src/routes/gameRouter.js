@@ -15,9 +15,10 @@ router.post("/", function (req, res) {
 
 // Listen to PUT /game/[id]/take-good
 router.put("/games/:id/take-good", function (req, res) {
-  const foundGame = databaseService.findOneGameById(req.path.id)
-  if (!req.path.id) {
-    return res.status(400).send("Missing id parameter")
+  const foundGame = databaseService.getGames()
+  const currGame = foundGame.find((game) => game.id === req.body.id)
+  if (!req.path.id || !currGame) {
+    return res.status(404).send("Missing id parameter")
   }
   if (!req.header()) {
     return res.status(400).send("Missing playerIndex parameter")
@@ -28,11 +29,11 @@ router.put("/games/:id/take-good", function (req, res) {
   if (req.path.id !== foundGame.currentPlayerIndex) {
     return res.status(401).send("PlayerIndex not equal to id")
   }
-  if (foundGame._player[foundGame.game.currentPlayerIndex][1].length >= 7) {
+  if (currGame._player[currGame.game.currentPlayerIndex][1].length >= 7) {
     return res.status(401).send("Already at 7 cards")
   }
-  gameService.takeGood(foundGame, req.path.id, req.body.takeGoodPayload)
-  res.status(200).send(foundGame)
+  gameService.takeGood(req.path.id, req.path.id, req.body.takeGoodPayload)
+  res.status(200).send(currGame)
 })
 
 export default router

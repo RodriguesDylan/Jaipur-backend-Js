@@ -1,6 +1,8 @@
 import request from "supertest"
 import app from "../app"
 import lodash from "lodash"
+import * as databaseService from "../services/databaseService"
+import fs from "fs"
 
 // Prevent database service to write tests game to filesystem
 jest.mock("fs")
@@ -8,6 +10,7 @@ jest.mock("fs")
 // Prevent shuffle for tests
 jest.mock("lodash")
 lodash.shuffle.mockImplementation((array) => array)
+
 
 describe("Game router", () => {
   test("should create a game", async () => {
@@ -91,6 +94,58 @@ describe("Game router", () => {
 
     const response = await request(app).post("/games").send({ name: "test" })
     expect(response.statusCode).toBe(201)
+    expect(response.body).toStrictEqual(expectedGame)
+  })
+
+  test("should take good", async () => {
+    // Allow the use of database
+    fs.readFileSync.mockImplementation(() => {
+      return JSON.stringify([{ name: "game", 
+      id: 1, 
+      market: ["camel", "camel", "camel", "diamonds"],
+      _players: [
+        {
+          hand: ["diamonds", "diamonds", "diamonds", "diamonds", "gold", "gold"],
+          camelsCount: 0,
+          score: 0,
+        },
+        {
+          hand: ["gold", "gold", "gold", "gold", "gold"],
+          camelsCount: 0,
+          score: 0,
+        }],
+      currentPlayerIndex: 0,
+    }])
+    })
+
+    const game = {
+      id: 1,
+      name: "test",
+      market: ["camel", "camel", "camel", "gold", "diamonds"],
+      _deck: [
+        "silver",
+        "cloth",
+      ],
+      _players: [
+        {
+          hand: ["diamonds", "diamonds", "diamonds", "diamonds", "gold"],
+          camelsCount: 0,
+          score: 0,
+        },
+        {
+          hand: ["gold", "gold", "gold", "gold", "gold"],
+          camelsCount: 0,
+          score: 0,
+        },
+      ],
+      currentPlayerIndex: 0,
+    }
+
+    const response = await request(app)
+      .put("/games/:id/take-good")
+      .send(, 0, "gold")
+
+    expect(response.statusCode).toBe(200)
     expect(response.body).toStrictEqual(expectedGame)
   })
 })
