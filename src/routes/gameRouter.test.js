@@ -96,14 +96,15 @@ describe("Game router", () => {
   })
 
   test("should find all games", async () => {
-
     fs.readFileSync.mockImplementation(() => "[]")
     const response1 = await request(app).get("/games")
     expect(response1.statusCode).toBe(404)
 
-    fs.readFileSync.mockImplementation(() => '[{"id1": 1},{"id2": 2},{"id3": 3}]')
+    fs.readFileSync.mockImplementation(
+      () => '[{"id1": 1},{"id2": 2},{"id3": 3}]'
+    )
     const response2 = await request(app).get("/games")
     expect(response2.statusCode).toBe(200)
-    expect(response2.body).toStrictEqual([{"id1": 1},{"id2": 2},{"id3": 3}])
-  }) 
+    expect(response2.body).toStrictEqual([{ id1: 1 }, { id2: 2 }, { id3: 3 }])
+  })
 })
