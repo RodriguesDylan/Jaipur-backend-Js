@@ -19,7 +19,16 @@ router.get("/", function (req, res) {
   if (listOfGames.length === 0) {
     return res.status(404).send("No game found")
   }
-  res.status(200).send(listOfGames)
+  res.status(200).json(listOfGames)
+})
+
+// Listen to GET /games/[id]
+router.get("/:id", function (req, res) {
+  const game = databaseService.findOneGameById(parseInt(req.params.id))
+  if (!game) {
+    return res.status(404).send("Game not found")
+  }
+  res.status(200).json(game)
 })
 
 export default router
