@@ -31,4 +31,7 @@ router.get("/:id", function (req, res) {
   res.status(200).json(game)
 })
 
+// Listen to DELETE /games/[id]
+router.get("/:id", function (req, res) {})
+
 export default router

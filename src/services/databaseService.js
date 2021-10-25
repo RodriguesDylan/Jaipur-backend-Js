@@ -41,3 +41,7 @@ export function findOneGameById(id) {
   const game = listOfGames.find((game) => game.id === id)
   return game
 }
+
+export function deleteGameById(id) {
+  const 
+}
