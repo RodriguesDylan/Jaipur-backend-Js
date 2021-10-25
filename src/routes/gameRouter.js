@@ -23,10 +23,10 @@ router.get("/", function (req, res) {
 })
 
 // Listen to GET /games/[id]
-router.get("/games/:id", function (req, res) {
-  const game = databaseService.findOneGameById(req.params.id)
+router.get("/:id", function (req, res) {
+  const game = databaseService.findOneGameById(parseInt(req.params.id))
   if (!game) {
-    return res.status(404).send("Not found")
+    return res.status(404).send("Game not found")
   }
   res.status(200).json(game)
 })
