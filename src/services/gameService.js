@@ -84,5 +84,8 @@ export function takeCamels(game, playerIndex) {
       game.market.push(card)
     }
   }
+  
+  game.currentPlayerIndex = (game.currentPlayerIndex + 1)%2
+
   databaseService.saveGame(game)
 }
