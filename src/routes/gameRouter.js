@@ -28,10 +28,10 @@ router.put("/games/:id/take-good", function (req, res) {
   if (req.path.id !== foundGame.currentPlayerIndex) {
     return res.status(401).send("PlayerIndex not equal to id")
   }
-  if (foundGame._player[foundGame.currentPlayerIndex][1].length >= 7) {
+  if (foundGame._player[foundGame.game.currentPlayerIndex][1].length >= 7) {
     return res.status(401).send("Already at 7 cards")
   }
-  takeGood(foundGame, req.path.id, req.body.takeGoodPayload)
+  gameService.takeGood(foundGame, req.path.id, req.body.takeGoodPayload)
   res.status(200).send(foundGame)
 })
 

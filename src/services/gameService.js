@@ -68,5 +68,9 @@ export function createGame(name) {
 }
 
 export function takeGood(game, playerIndex, takeGoodPayload) {
-  const takenGood = game.market
+  const takenGoodIndex = game.market.findIndex(
+    (card) => card === takeGoodPayload
+  )
+  game._players[playerIndex].hand.push(game.market[takenGoodIndex])
+  game.market.splice(takenGoodIndex, 1)
 }
