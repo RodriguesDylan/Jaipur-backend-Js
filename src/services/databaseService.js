@@ -35,3 +35,9 @@ export function findAllGames() {
   const listOfGames = getGames()
   return listOfGames
 }
+
+export function findOneGameById(id) {
+  const listOfGames = findAllGames()
+  const game = listOfGames.find((game) => game.id === id)
+  return game
+}
