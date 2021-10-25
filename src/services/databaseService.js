@@ -30,3 +30,14 @@ export function saveGame(game) {
   fs.writeFileSync(path.join(DATABASE_FILE), JSON.stringify(games))
   return games
 }
+
+export function findAllGames() {
+  const listOfGames = getGames()
+  return listOfGames
+}
+
+export function findOneGameById(id) {
+  const listOfGames = findAllGames()
+  const game = listOfGames.find((game) => game.id === id)
+  return game
+}
