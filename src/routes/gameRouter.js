@@ -34,4 +34,7 @@ router.put("/games/:id/take-camels", function (req, res) {
   if (game.currentPlayerIndex !== playerIndex) {
     return res.status(403).send("Wrong player")
   }
+
+  gameService.takeCamels(game,playerIndex)
+
 })
