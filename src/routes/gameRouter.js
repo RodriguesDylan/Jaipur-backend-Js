@@ -55,4 +55,6 @@ router.put("/:id/take-camels", function (req, res) {
   }
 
   gameService.takeCamels(game, playerIndex)
+
+  return res.status(200).send(game)
 })
