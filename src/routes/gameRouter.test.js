@@ -11,7 +11,6 @@ jest.mock("fs")
 jest.mock("lodash")
 lodash.shuffle.mockImplementation((array) => array)
 
-
 describe("Game router", () => {
   test("should create a game", async () => {
     const expectedGame = {
@@ -98,14 +97,21 @@ describe("Game router", () => {
   })
 
   test("should take good", async () => {
-    // Allow the use of database
-    fs.readFileSync.mockImplementation(() => {
-      return JSON.stringify([{ name: "game", 
-      id: 1, 
-      market: ["camel", "camel", "camel", "diamonds"],
+    const currGame = {
+      id: 1,
+      name: "test",
+      market: ["camel", "camel", "camel", "diamonds", "gold"],
+      _deck: ["silver", "cloth"],
       _players: [
         {
-          hand: ["diamonds", "diamonds", "diamonds", "diamonds", "gold", "gold"],
+          hand: [
+            "diamonds",
+            "diamonds",
+            "diamonds",
+            "diamonds",
+            "gold",
+            "gold",
+          ],
           camelsCount: 0,
           score: 0,
         },
@@ -113,22 +119,25 @@ describe("Game router", () => {
           hand: ["gold", "gold", "gold", "gold", "gold"],
           camelsCount: 0,
           score: 0,
-        }],
+        },
+      ],
       currentPlayerIndex: 0,
-    }])
-    })
-
-    const game = {
+    }
+    const expectedGame = {
       id: 1,
       name: "test",
-      market: ["camel", "camel", "camel", "gold", "diamonds"],
-      _deck: [
-        "silver",
-        "cloth",
-      ],
+      market: ["camel", "camel", "camel", "diamonds", "silver"],
+      _deck: ["cloth"],
       _players: [
         {
-          hand: ["diamonds", "diamonds", "diamonds", "diamonds", "gold"],
+          hand: [
+            "diamonds",
+            "diamonds",
+            "diamonds",
+            "diamonds",
+            "gold",
+            "gold",
+          ],
           camelsCount: 0,
           score: 0,
         },
@@ -142,8 +151,12 @@ describe("Game router", () => {
     }
 
     const response = await request(app)
-      .put("/games/:id/take-good")
-      .send(, 0, "gold")
+      .put("/games/1/take-good")
+      .send({
+        good: "gold",
+      })
+      .set("playerindex", "0")
+    console.log(response)
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toStrictEqual(expectedGame)

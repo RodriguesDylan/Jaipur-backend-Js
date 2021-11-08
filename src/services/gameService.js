@@ -73,4 +73,6 @@ export function takeGood(game, playerIndex, takeGoodPayload) {
   )
   game._players[playerIndex].hand.push(game.market[takenGoodIndex])
   game.market.splice(takenGoodIndex, 1)
+  game.market.push(game._deck[0])
+  game._deck.splice(0, 1)
 }
