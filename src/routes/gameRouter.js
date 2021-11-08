@@ -31,4 +31,15 @@ router.get("/:id", function (req, res) {
   res.status(200).json(game)
 })
 
+// Listen to DELETE /games/[id]
+router.delete("/:id", function (req, res) {
+  const expectedGame = databaseService.findOneGameById(req.params.id)
+  if (!expectedGame) {
+    return res.status(404).send("Game not found")
+  }
+  databaseService.deleteGameById(parseInt(req.params.id))
+
+  res.status(200).send("Game deleted")
+})
+
 export default router

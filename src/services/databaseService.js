@@ -26,9 +26,9 @@ export function saveGame(game) {
     fs.mkdirSync(path.dirname(DATABASE_FILE))
   } catch (e) {
     // Do nothing
+    fs.writeFileSync(path.join(DATABASE_FILE), JSON.stringify(games))
+    return games
   }
-  fs.writeFileSync(path.join(DATABASE_FILE), JSON.stringify(games))
-  return games
 }
 
 export function findAllGames() {
@@ -40,4 +40,11 @@ export function findOneGameById(id) {
   const listOfGames = findAllGames()
   const game = listOfGames.find((game) => game.id === id)
   return game
+}
+
+export function deleteGameById(id) {
+  const game = findOneGameById(id)
+  const file = fs.readFileSync(DATABASE_FILE)
+  const newFile = file.replace(game, "")
+  fs.writeFileSync(DATABASE_FILE, newFile, "utf-8")
 }

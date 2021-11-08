@@ -28,9 +28,15 @@ describe("Database service", () => {
   })
 
   test("should get all games", () => {
-    fs.readFileSync.mockImplementation(() => `[{"id": 1}, {"id": 1}]`)
+    fs.readFileSync.mockImplementation(() => `[{"id": 1}, {"id": 2}]`)
     const games = databaseService.getGames()
     expect(games.length).toBe(2)
     expect(games[0].id).toBe(1)
+  })
+
+  test("should delete the game", () => {
+    fs.readFileSync.mockImplementation(() => `[{"id": 1}, {"id": 2}]`)
+    databaseService.deleteGameById(2)
+    expect(fs.writeFileSync).toHaveBeenCalled()
   })
 })
