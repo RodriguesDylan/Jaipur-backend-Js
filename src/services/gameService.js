@@ -17,8 +17,7 @@ export function initDeck() {
 // Draw {count} cards of a deck
 export function drawCards(deck, count = 1) {
   const drawncards = []
-  for (let i = 0; i < count; i++) 
-   drawncards.push(deck.shift())
+  for (let i = 0; i < count; i++) drawncards.push(deck.shift())
   return drawncards
 }
 
@@ -72,20 +71,20 @@ export function takeCamels(game, playerIndex) {
   let camelIndex = game.market.findIndex((card) => card === "camel")
   let nbCamels = 0
   while (camelIndex !== -1) {
-    game.market.splice(camelIndex,1)
+    game.market.splice(camelIndex, 1)
     nbCamels++
     game._players[playerIndex].camelsCount++
     camelIndex = game.market.findIndex((card) => card === "camel")
   }
   const drawnCards = drawCards(game._deck, nbCamels)
   while (drawnCards.length > 0) {
-    let card = drawnCards.shift()
+    const card = drawnCards.shift()
     if (card !== undefined) {
       game.market.push(card)
     }
   }
-  
-  game.currentPlayerIndex = (game.currentPlayerIndex + 1)%2
+
+  game.currentPlayerIndex = (game.currentPlayerIndex + 1) % 2
 
   databaseService.saveGame(game)
 }

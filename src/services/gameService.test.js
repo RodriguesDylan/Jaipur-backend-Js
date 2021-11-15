@@ -77,58 +77,59 @@ describe("Game service", () => {
     expect(game3._players[1].camelsCount).toBe(3)
   })
 
-
   // TEST takeCamels
   test("should take all camels from market and put them in a player herd", () => {
-    let _deck = ["silver", "silver", "silver"]
-    let market = ["camel", "silver", "camel", "silver", "camel"]
-    let game = {
+    const _deck = ["silver", "silver", "silver"]
+    const market = ["camel", "silver", "camel", "silver", "camel"]
+    const game = {
       _deck,
-      _players: [
-        {camelsCount: 0},
-        {camelsCount: 0},
-      ],
+      _players: [{ camelsCount: 0 }, { camelsCount: 0 }],
       market,
     }
-    gameService.takeCamels(game,0)
+    gameService.takeCamels(game, 0)
     expect(game._players[0].camelsCount).toBe(3)
     expect(game._players[1].camelsCount).toBe(0)
-    expect(game.market).toStrictEqual(["silver", "silver", "silver", "silver", "silver"])
+    expect(game.market).toStrictEqual([
+      "silver",
+      "silver",
+      "silver",
+      "silver",
+      "silver",
+    ])
   })
 
   test("shouldn't do anything", () => {
-    let _deck = []
-    let market = ["silver", "silver", "silver", "silver", "silver"]
-    let game = {
-      _deck, 
+    const _deck = []
+    const market = ["silver", "silver", "silver", "silver", "silver"]
+    const game = {
+      _deck,
       market,
-      _players: [
-        {camelsCount: 0},
-        {camelsCount: 0},
-      ],
+      _players: [{ camelsCount: 0 }, { camelsCount: 0 }],
     }
-    gameService.takeCamels(game,0)
+    gameService.takeCamels(game, 0)
     expect(game._players[0].camelsCount).toBe(0)
     expect(game._players[1].camelsCount).toBe(0)
-    expect(game.market).toStrictEqual(["silver", "silver", "silver", "silver", "silver"])
+    expect(game.market).toStrictEqual([
+      "silver",
+      "silver",
+      "silver",
+      "silver",
+      "silver",
+    ])
   })
 
   test("should take camels but not put any card back in the market", () => {
-    let _deck = []
-    let market = ["silver", "camel", "silver", "camel", "silver"]
-    let game = {
-      _deck, 
+    const _deck = []
+    const market = ["silver", "camel", "silver", "camel", "silver"]
+    const game = {
+      _deck,
       market,
-      _players: [
-        {camelsCount: 0},
-        {camelsCount: 0},
-      ],
+      _players: [{ camelsCount: 0 }, { camelsCount: 0 }],
     }
-    gameService.takeCamels(game,0)
+    gameService.takeCamels(game, 0)
     expect(game._players[0].camelsCount).toBe(2)
     expect(game._players[1].camelsCount).toBe(0)
-    //expect(game.market.length).toBe(3)
+    // expect(game.market.length).toBe(3)
     expect(game.market).toStrictEqual(["silver", "silver", "silver"])
   })
-
 })
