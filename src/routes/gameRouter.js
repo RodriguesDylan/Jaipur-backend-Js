@@ -32,3 +32,29 @@ router.get("/:id", function (req, res) {
 })
 
 export default router
+
+router.put("/:id/take-camels", function (req, res) {
+  if (!req.params.id) {
+    return res.status(400).send("Missing id")
+  }
+  if (!req.header("playerIndex")) {
+    return res.status(400).send("Missing header playerIndex")
+  }
+
+  const gameId = Number.parseInt(req.params.id)
+  const playerIndex = Number.parseInt(req.header("playerIndex"))
+
+  const game = databaseService.findOneGameById(gameId)
+
+  if (!game) {
+    return res.status(404).send("Game not found")
+  }
+  if (game.currentPlayerIndex !== playerIndex) {
+    console.log(game.currentPlayerIndex)
+    return res.status(403).send("Wrong player")
+  }
+
+  gameService.takeCamels(game, playerIndex)
+
+  return res.status(200).send(game)
+})
