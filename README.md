@@ -1,6 +1,6 @@
 # Jaipur
 
-# TO RE-DO ENTIRELY
+# TO RE-DO / CHECK ONE DAY (when im not lazy or when i want to do JS again...)
 
 
 ## Install
